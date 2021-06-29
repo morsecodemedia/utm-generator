@@ -1,65 +1,71 @@
 <template>
   <div class="form">
-    <form>
-      <label for="url">Website URL*</label>
-      <input
-        v-model="url"
-        type="text"
-        placeholder="https://www.yourdomain.com/"
-        aria-placeholder="https://www.yourdomain.com/"
-      >
-
-      <label for="source">Campaign Source</label>
-      <input
-        v-model="source"
-        type="text"
-        placeholder="referrer: google, facebook, newsletter"
-        aria-placeholder="referrer: google, facebook, newsletter"
-      >
-
-      <label for="medium">Campaign Medium</label>
-      <input
-        v-model="medium"
-        type="text"
-        placeholder="marketing medium: cpc, banner, email, social"
-        aria-placeholder="marketing medium: cpc, banner, email, social"
-      >
-
-      <label for="campaign">Campaign Name</label>
-      <input
-        v-model="campaign"
-        type="text"
-        placeholder="e.g. product, promo code, slogan"
-        aria-placeholder="e.g. product, promo code, slogan"
-      >
-
-      <label for="term">Campaign Term</label>
-      <input
-        v-model="term"
-        type="text"
-        placeholder="(optional) Identify the paid keywords"
-        aria-placeholder="(optional) Identify the paid keywords"
-      >
-
-      <label for="content">Campaign Content</label>
-      <input
-        v-model="content"
-        type="text"
-        placeholder="(optional) use to differentiate ads"
-        aria-placeholder="(optional) use to differentiate ads"
-      >
-
-      <button>Build URL</button>
-
-      <button>Clear Form</button>
-    </form>
-
-    <label for="generated-url">Your Generated URL:</label>
-    <input
-      v-model="result"
-      type="text"
+    <v-form
+      ref="form"
     >
-    <button>Copy URL</button>
+      <v-text-field
+        label="Website URL*"
+        hint="https://www.yourdomain.com/"
+        persistent-hint
+      ></v-text-field>
+
+      <v-text-field
+        label="Campaign Source"
+        hint="referrer: google, facebook, newsletter"
+        persistent-hint
+      ></v-text-field>
+
+      <v-text-field
+        label="Campaign Medium"
+        hint="marketing medium: cpc, banner, email, social"
+        persistent-hint
+      ></v-text-field>
+
+      <v-text-field
+        label="Campaign Name"
+        hint="e.g. product, promo code, slogan"
+        persistent-hint
+      ></v-text-field>
+
+      <v-text-field
+        label="Campaign Term"
+        hint="(optional) Identify the paid keywords"
+        persistent-hint
+      ></v-text-field>
+
+      <v-text-field
+        label="Campaign Content"
+        hint="(optional) use to differentiate ads"
+        persistent-hint
+      ></v-text-field>
+
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        class="mr-4"
+      >
+        Build URL
+      </v-btn>
+
+      <v-btn
+        :disabled="!valid"
+        color="error"
+        class="mr-4"
+      >
+        Reset Form
+      </v-btn>
+    </v-form>
+
+    <v-text-field
+      label="Your Generated URL"
+    ></v-text-field>
+    <v-btn
+      :disabled="!valid"
+      color="success"
+      class="mr-4"
+    >
+      Copy URL
+    </v-btn>
   </div>
 </template>
 
@@ -85,18 +91,5 @@ export default {
 .form {
   margin: 0 auto;
   max-width: 1000px;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 35px;
-}
-
-button {
-  display: inline-block;
-}
-
-input {
-  margin-bottom: 15px;
 }
 </style>
