@@ -1,6 +1,7 @@
 
 export default {
   telemetry: false,
+  target: 'static',
   /*
   ** Headers of the page
   */
