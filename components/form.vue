@@ -5,6 +5,7 @@
     lazy-validation
     class="form"
   >
+    <p>Fill in the information in the URL builder below and click the Build URL button.</p>
     <v-text-field
       v-model="website"
       :rules="websiteRules"
@@ -178,7 +179,7 @@ export default {
 .form {
   margin: 0 auto;
   max-width: 1000px;
-  padding: 0 20px;
+  padding: 20px;
 }
 .v-input,
 .v-btn {
