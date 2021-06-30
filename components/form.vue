@@ -72,6 +72,7 @@
     />
 
     <v-btn
+      v-clipboard:copy="generatedURL"
       dark
       color="warning"
     >
@@ -81,6 +82,11 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
+
 export default {
   name: 'Form',
   data () {
