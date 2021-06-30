@@ -33,8 +33,7 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-  ],
+  plugins: ['~/plugins/vuetify'],
   /*
   ** Nuxt.js dev-modules
   */
@@ -43,7 +42,7 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify'
+    ['@nuxtjs/vuetify', {}]
   ],
   /*
   ** Nuxt.js modules
