@@ -1,84 +1,95 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-    class="form"
-  >
-    <p>Fill in the information in the URL builder below and click the Build URL button.</p>
-    <v-text-field
-      v-model="website"
-      :rules="websiteRules"
-      label="Website URL*"
-      hint="https://www.yourdomain.com/"
-      persistent-hint
-      required
-    />
-
-    <v-text-field
-      v-model="campaignSource"
-      label="Campaign Source"
-      hint="referrer: google, facebook, newsletter"
-      persistent-hint
-    />
-
-    <v-text-field
-      v-model="campaignMedium"
-      label="Campaign Medium"
-      hint="marketing medium: cpc, banner, email, social"
-      persistent-hint
-    />
-
-    <v-text-field
-      v-model="campaignName"
-      label="Campaign Name"
-      hint="e.g. product, promo code, slogan"
-      persistent-hint
-    />
-
-    <v-text-field
-      v-model="campaignTerm"
-      label="Campaign Term"
-      hint="(optional) Identify the paid keywords"
-      persistent-hint
-    />
-
-    <v-text-field
-      v-model="campaignContent"
-      label="Campaign Content"
-      hint="(optional) use to differentiate ads"
-      persistent-hint
-    />
-
-    <v-btn
-      dark
-      color="success"
-      @click="validate"
+  <v-app>
+    <v-card
+      class="mx-auto"
+      flat
+      max-width="1000"
     >
-      Build URL
-    </v-btn>
+      <v-container fluid>
+        <h1>UTM Generator</h1>
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+          class="form"
+        >
+          <p>Fill in the information in the URL builder below and click the Build URL button.</p>
+          <v-text-field
+            v-model="website"
+            :rules="websiteRules"
+            label="Website URL*"
+            hint="https://www.yourdomain.com/"
+            persistent-hint
+            required
+          />
 
-    <v-btn
-      dark
-      color="info"
-      @click="reset"
-    >
-      Reset Form
-    </v-btn>
+          <v-text-field
+            v-model="campaignSource"
+            label="Campaign Source"
+            hint="referrer: google, facebook, newsletter"
+            persistent-hint
+          />
 
-    <v-text-field
-      v-model="generatedURL"
-      label="Your Generated URL"
-    />
+          <v-text-field
+            v-model="campaignMedium"
+            label="Campaign Medium"
+            hint="marketing medium: cpc, banner, email, social"
+            persistent-hint
+          />
 
-    <v-btn
-      v-clipboard:copy="generatedURL"
-      dark
-      color="warning"
-    >
-      Copy URL
-    </v-btn>
-  </v-form>
+          <v-text-field
+            v-model="campaignName"
+            label="Campaign Name"
+            hint="e.g. product, promo code, slogan"
+            persistent-hint
+          />
+
+          <v-text-field
+            v-model="campaignTerm"
+            label="Campaign Term"
+            hint="(optional) Identify the paid keywords"
+            persistent-hint
+          />
+
+          <v-text-field
+            v-model="campaignContent"
+            label="Campaign Content"
+            hint="(optional) use to differentiate ads"
+            persistent-hint
+          />
+
+          <v-btn
+            dark
+            color="success"
+            @click="validate"
+          >
+            Build URL
+          </v-btn>
+
+          <v-btn
+            dark
+            color="info"
+            @click="reset"
+          >
+            Reset Form
+          </v-btn>
+
+          <v-text-field
+            v-model="generatedURL"
+            label="Your Generated URL"
+          />
+
+          <v-btn
+            v-clipboard:copy="generatedURL"
+            dark
+            color="warning"
+          >
+            Copy URL
+          </v-btn>
+        </v-form>
+      </v-container>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
@@ -182,11 +193,6 @@ export default {
 </script>
 
 <style>
-.form {
-  margin: 0 auto;
-  max-width: 1000px;
-  padding: 20px;
-}
 .v-input,
 .v-btn {
   margin-bottom: 20px;
