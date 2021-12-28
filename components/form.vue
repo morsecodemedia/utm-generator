@@ -107,16 +107,16 @@ export default {
       websiteRules: [
         v => !!v || 'An URL is required'
       ],
-      campaignSource: 'newsletter',
-      campaignMedium: 'email',
-      campaignName: '2021-holiday-product-promo',
+      campaignSource: '',
+      campaignMedium: '',
+      campaignName: '',
       campaignTerm: '',
       campaignContent: '',
       hasParams: false,
       params: '',
       hash: '',
       hashStart: '',
-      generatedURL: 'https://utm-generator.morsecodemedia.com/?utm_source=newsletter&utm_medium=email&utm_campaign=2021-holiday-product-promo',
+      generatedURL: '',
       generatedLinkUrl: ''
     }
   },
@@ -137,7 +137,16 @@ export default {
       if (this.getParameterByName('utm_content')) {
         this.campaignContent = this.getParameterByName('utm_content')
       }
-      this.buildUTM()
+      if (
+        this.getParameterByName('utm_source') ||
+        this.getParameterByName('utm_medium') ||
+        this.getParameterByName('utm_campaign') ||
+        this.getParameterByName('utm_term') ||
+        this.getParameterByName('utm_content')
+      ) {
+        // this.buildUTM()
+        this.validate()
+      }
     }
   },
   methods: {
@@ -152,8 +161,18 @@ export default {
       this.hash = ''
       this.hashStart = ''
       this.generatedURL = ''
+      this.params = ''
+      this.website = ''
+      this.campaignSource = ''
+      this.campaignMedium = ''
+      this.campaignName = ''
+      this.campaignTerm = ''
+      this.campaignContent = ''
     },
     buildUTM () {
+      this.generatedUrl = ''
+      this.generatedLinkUrl = ''
+      this.params = ''
       this.generatedURL = this.website
       this.generatedLinkUrl = this.website
 
