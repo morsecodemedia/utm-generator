@@ -103,20 +103,20 @@ export default {
   data () {
     return {
       valid: true,
-      website: '',
+      website: 'https://utm-generator.morsecodemedia.com/',
       websiteRules: [
         v => !!v || 'An URL is required'
       ],
-      campaignSource: '',
-      campaignMedium: '',
-      campaignName: '',
+      campaignSource: 'newsletter',
+      campaignMedium: 'email',
+      campaignName: '2021-holiday-product-promo',
       campaignTerm: '',
       campaignContent: '',
       hasParams: false,
       params: '',
       hash: '',
       hashStart: '',
-      generatedURL: '',
+      generatedURL: 'https://utm-generator.morsecodemedia.com/?utm_source=newsletter&utm_medium=email&utm_campaign=2021-holiday-product-promoutm_source=newsletter&utm_medium=email&utm_campaign=2021-holiday-product-promo',
       generatedLinkUrl: ''
     }
   },
