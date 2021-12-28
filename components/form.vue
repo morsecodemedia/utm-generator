@@ -116,8 +116,28 @@ export default {
       params: '',
       hash: '',
       hashStart: '',
-      generatedURL: 'https://utm-generator.morsecodemedia.com/?utm_source=newsletter&utm_medium=email&utm_campaign=2021-holiday-product-promoutm_source=newsletter&utm_medium=email&utm_campaign=2021-holiday-product-promo',
+      generatedURL: 'https://utm-generator.morsecodemedia.com/?utm_source=newsletter&utm_medium=email&utm_campaign=2021-holiday-product-promo',
       generatedLinkUrl: ''
+    }
+  },
+  mounted () {
+    if (process.browser) {
+      if (this.getParameterByName('utm_source')) {
+        this.campaignSource = this.getParameterByName('utm_source')
+      }
+      if (this.getParameterByName('utm_medium')) {
+        this.campaignMedium = this.getParameterByName('utm_medium')
+      }
+      if (this.getParameterByName('utm_campaign')) {
+        this.campaignName = this.getParameterByName('utm_campaign')
+      }
+      if (this.getParameterByName('utm_term')) {
+        this.campaignTerm = this.getParameterByName('utm_term')
+      }
+      if (this.getParameterByName('utm_content')) {
+        this.campaignContent = this.getParameterByName('utm_content')
+      }
+      this.buildUTM()
     }
   },
   methods: {
@@ -187,6 +207,23 @@ export default {
         }
       }
       this.generatedURL += this.hash
+    },
+    getParameterByName (name, url) {
+      if (process.browser) {
+        if (!url) {
+          url = window.location.href
+        }
+        name = name.replace(/[[\]]/g, '\\$&')
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
+        const results = regex.exec(url)
+        if (!results) {
+          return null
+        }
+        if (!results[2]) {
+          return ''
+        }
+        return decodeURIComponent(results[2].replace(/\+/g, ' '))
+      }
     }
   }
 }
