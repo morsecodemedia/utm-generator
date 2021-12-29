@@ -14,6 +14,7 @@
           class="form"
         >
           <p>Fill in the information in the URL builder below and click the Build URL button.</p>
+          <p><strong>Note:</strong> UTM parameters are <em>case sensitive</em> and you should be consistent when tagging your links.</p>
           <v-text-field
             v-model="website"
             :rules="websiteRules"
@@ -25,6 +26,7 @@
 
           <v-text-field
             v-model="campaignSource"
+            :messages="[caseSensitiveSource]"
             label="Campaign Source"
             hint="referrer: google, facebook, newsletter"
             persistent-hint
@@ -32,6 +34,7 @@
 
           <v-text-field
             v-model="campaignMedium"
+            :messages="[caseSensitiveMedium]"
             label="Campaign Medium"
             hint="marketing medium: cpc, banner, email, social"
             persistent-hint
@@ -39,6 +42,7 @@
 
           <v-text-field
             v-model="campaignName"
+            :messages="[caseSensitiveCampaign]"
             label="Campaign Name"
             hint="e.g. product, promo code, slogan"
             persistent-hint
@@ -46,13 +50,15 @@
 
           <v-text-field
             v-model="campaignTerm"
+            :messages="[caseSensitiveTerm]"
             label="Campaign Term"
-            hint="(optional) Identify the paid keywords"
+            hint="(optional) use to identify the paid keywords"
             persistent-hint
           />
 
           <v-text-field
             v-model="campaignContent"
+            :messages="[caseSensitiveContent]"
             label="Campaign Content"
             hint="(optional) use to differentiate ads"
             persistent-hint
@@ -243,6 +249,56 @@ export default {
         }
         return decodeURIComponent(results[2].replace(/\+/g, ' '))
       }
+    },
+    caseSensitiveSource (value) {
+      if (value.length > 0) {
+        if (value === value.toLowerCase() || value === value.toUpperCase()) {
+          return 'referrer: google, facebook, newsletter'
+        } else {
+          return 'Reminder: UTM parameters are case sensitive.'
+        }
+      }
+      return 'referrer: google, facebook, newsletter'
+    },
+    caseSensitiveMedium (value) {
+      if (value.length > 0) {
+        if (value === value.toLowerCase() || value === value.toUpperCase()) {
+          return 'marketing medium: cpc, banner, email, social'
+        } else {
+          return 'Reminder: UTM parameters are case sensitive.'
+        }
+      }
+      return 'marketing medium: cpc, banner, email, social'
+    },
+    caseSensitiveCampaign (value) {
+      if (value.length > 0) {
+        if (value === value.toLowerCase() || value === value.toUpperCase()) {
+          return 'e.g. product, promo code, slogan'
+        } else {
+          return 'Reminder: UTM parameters are case sensitive.'
+        }
+      }
+      return 'e.g. product, promo code, slogan'
+    },
+    caseSensitiveTerm (value) {
+      if (value.length > 0) {
+        if (value === value.toLowerCase() || value === value.toUpperCase()) {
+          return '(optional) use to identify the paid keywords'
+        } else {
+          return 'Reminder: UTM parameters are case sensitive.'
+        }
+      }
+      return '(optional) use to identify the paid keywords'
+    },
+    caseSensitiveContent (value) {
+      if (value.length > 0) {
+        if (value === value.toLowerCase() || value === value.toUpperCase()) {
+          return '(optional) use to differentiate ads'
+        } else {
+          return 'Reminder: UTM parameters are case sensitive.'
+        }
+      }
+      return '(optional) use to differentiate ads'
     }
   }
 }
