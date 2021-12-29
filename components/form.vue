@@ -123,7 +123,8 @@ export default {
       hash: '',
       hashStart: '',
       generatedURL: '',
-      generatedLinkUrl: ''
+      generatedLinkUrl: '',
+      allowPlusSign: '/%2B/i'
     }
   },
   mounted () {
@@ -205,22 +206,38 @@ export default {
       }
 
       if (this.campaignMedium.trim() !== '') {
-        this.params += this.has_params ? '&utm_medium=' + encodeURIComponent(this.campaignMedium.trim()) : 'utm_medium=' + encodeURIComponent(this.campaignMedium.trim())
+        this.params += this.has_params ? '&utm_medium=' +
+          this.campaignMedium.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignMedium.trim())) : 'utm_medium=' +
+          this.campaignMedium.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignMedium.trim()))
         this.has_params = true
       }
 
       if (this.campaignName.trim() !== '') {
-        this.params += this.has_params ? '&utm_campaign=' + encodeURIComponent(this.campaignName.trim()) : 'utm_campaign=' + encodeURIComponent(this.campaignName.trim())
+        this.params += this.has_params ? '&utm_campaign=' +
+          this.campaignName.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignName.trim())) : 'utm_campaign=' +
+          this.campaignName.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignName.trim()))
         this.has_params = true
       }
 
       if (this.campaignTerm.trim() !== '') {
-        this.params += this.has_params ? '&utm_term=' + encodeURIComponent(this.campaignTerm.trim()) : 'utm_term=' + encodeURIComponent(this.campaignTerm.trim())
+        this.params += this.has_params ? '&utm_term=' +
+          this.campaignTerm.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignTerm.trim())) : 'utm_term=' +
+          this.campaignTerm.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignTerm.trim()))
         this.has_params = true
       }
 
       if (this.campaignContent.trim() !== '') {
-        this.params += this.has_params ? '&utm_content=' + encodeURIComponent(this.campaignContent.trim()) : 'utm_content=' + encodeURIComponent(this.campaignContent.trim())
+        this.params += this.has_params ? '&utm_content=' +
+          this.campaignContent.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignContent.trim())) : 'utm_content=' +
+          this.campaignContent.replace(this.allowPlusSign,
+            encodeURIComponent(this.campaignContent.trim()))
         this.has_params = true
       }
 
