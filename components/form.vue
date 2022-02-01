@@ -168,6 +168,8 @@ export default {
         params += 'utm_content=' + encodeURIComponent(this.campaignContent.trim())
       }
 
+      params = params.replace(/%2B/gi, '+')
+
       if (params.length) {
         if (accumulator.indexOf('?') > 0) {
           accumulator += '&' + params
@@ -177,7 +179,6 @@ export default {
       }
 
       accumulator += hash
-      accumulator = accumulator.replace(/%2B/gi, '+')
       return accumulator
     }
   },
