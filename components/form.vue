@@ -66,14 +66,6 @@
 
           <v-btn
             dark
-            color="success"
-            @click="validate"
-          >
-            Build URL
-          </v-btn>
-
-          <v-btn
-            dark
             color="info"
             @click="reset"
           >
@@ -83,6 +75,7 @@
           <v-text-field
             v-model="generatedURL"
             label="Your Generated URL"
+            readonly
           />
 
           <v-btn
@@ -117,58 +110,89 @@ export default {
       campaignMedium: '',
       campaignName: '',
       campaignTerm: '',
-      campaignContent: '',
-      hasParams: false,
-      params: '',
-      hash: '',
-      hashStart: '',
-      generatedURL: '',
-      generatedLinkUrl: '',
-      allowPlusSign: '/%2B/i'
+      campaignContent: ''
+    }
+  },
+  computed: {
+    generatedURL () {
+      let accumulator
+      let params = ''
+      let hash = ''
+
+      if (this.website.indexOf('#') > 0) {
+        const hashStart = this.website.indexOf('#')
+        hash = this.website.substring(hashStart)
+        accumulator = this.website.substring(0, hashStart)
+      } else {
+        accumulator = this.website
+      }
+
+      if (accumulator.indexOf('https') !== 0) {
+        accumulator = 'https://' + accumulator.trim()
+      }
+
+      if (accumulator.includes('/', 10) < 0 && accumulator.includes('?') < 0) {
+        accumulator += '/'
+      }
+      // this.campaignSource = encodeURIComponent(this.campaignSource.trim())
+
+      if (this.campaignSource) {
+        params += 'utm_source=' + encodeURIComponent(this.campaignSource.trim())
+      }
+
+      if (this.campaignMedium.trim() !== '') {
+        if (params.length) {
+          params += '&'
+        }
+        params += 'utm_medium=' + encodeURIComponent(this.campaignMedium.trim())
+      }
+
+      if (this.campaignName.trim() !== '') {
+        if (params.length) {
+          params += '&'
+        }
+        params += 'utm_campaign=' + encodeURIComponent(this.campaignName.trim())
+      }
+
+      if (this.campaignTerm.trim() !== '') {
+        if (params.length) {
+          params += '&'
+        }
+        params += 'utm_term=' + encodeURIComponent(this.campaignTerm.trim())
+      }
+
+      if (this.campaignContent.trim() !== '') {
+        if (params.length) {
+          params += '&'
+        }
+        params += 'utm_content=' + encodeURIComponent(this.campaignContent.trim())
+      }
+
+      params = params.replace(/%2B/gi, '+')
+
+      if (params.length) {
+        if (accumulator.indexOf('?') > 0) {
+          accumulator += '&' + params
+        } else {
+          accumulator += '?' + params
+        }
+      }
+
+      accumulator += hash
+      return accumulator
     }
   },
   mounted () {
     if (process.browser) {
-      if (this.getParameterByName('utm_source')) {
-        this.campaignSource = this.getParameterByName('utm_source')
-      }
-      if (this.getParameterByName('utm_medium')) {
-        this.campaignMedium = this.getParameterByName('utm_medium')
-      }
-      if (this.getParameterByName('utm_campaign')) {
-        this.campaignName = this.getParameterByName('utm_campaign')
-      }
-      if (this.getParameterByName('utm_term')) {
-        this.campaignTerm = this.getParameterByName('utm_term')
-      }
-      if (this.getParameterByName('utm_content')) {
-        this.campaignContent = this.getParameterByName('utm_content')
-      }
-      if (
-        this.getParameterByName('utm_source') ||
-        this.getParameterByName('utm_medium') ||
-        this.getParameterByName('utm_campaign') ||
-        this.getParameterByName('utm_term') ||
-        this.getParameterByName('utm_content')
-      ) {
-        // this.buildUTM()
-        this.validate()
-      }
+      this.campaignSource = this.getParameterByName('utm_source')
+      this.campaignMedium = this.getParameterByName('utm_medium')
+      this.campaignName = this.getParameterByName('utm_campaign')
+      this.campaignTerm = this.getParameterByName('utm_term')
+      this.campaignContent = this.getParameterByName('utm_content')
     }
   },
   methods: {
-    validate () {
-      this.$refs.form.validate()
-      if (this.valid) {
-        this.buildUTM()
-      }
-    },
     reset () {
-      this.$refs.form.reset()
-      this.hash = ''
-      this.hashStart = ''
-      this.generatedURL = ''
-      this.params = ''
       this.website = ''
       this.campaignSource = ''
       this.campaignMedium = ''
@@ -176,99 +200,22 @@ export default {
       this.campaignTerm = ''
       this.campaignContent = ''
     },
-    buildUTM () {
-      this.generatedUrl = ''
-      this.generatedLinkUrl = ''
-      this.params = ''
-      this.generatedURL = this.website
-      this.generatedLinkUrl = this.website
-
-      if (this.generatedURL.indexOf('#') > 0) {
-        this.hash_start = this.generatedURL.indexOf('#')
-        this.hash = this.website.substring(this.hash_start)
-        this.generatedURL = this.website.substring(0, this.hash_start)
-        this.generatedLinkUrl = this.website.substring(0, this.hash_start)
-      }
-
-      if (this.generatedURL.indexOf('https') !== 0) {
-        this.generatedURL = 'https://' + this.generatedURL.trim()
-        this.generatedLinkUrl = 'https://' + this.generatedURL.trim()
-      }
-
-      if (this.generatedURL.includes('/', 10) < 0 && this.generatedURL.includes('?') < 0) {
-        this.generatedURL += '/'
-      }
-      this.campaignSource = encodeURIComponent(this.campaignSource.trim())
-
-      if (this.campaignSource) {
-        this.params += 'utm_source=' + this.campaignSource
-        this.has_params = true
-      }
-
-      if (this.campaignMedium.trim() !== '') {
-        this.params += this.has_params ? '&utm_medium=' +
-          this.campaignMedium.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignMedium.trim())) : 'utm_medium=' +
-          this.campaignMedium.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignMedium.trim()))
-        this.has_params = true
-      }
-
-      if (this.campaignName.trim() !== '') {
-        this.params += this.has_params ? '&utm_campaign=' +
-          this.campaignName.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignName.trim())) : 'utm_campaign=' +
-          this.campaignName.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignName.trim()))
-        this.has_params = true
-      }
-
-      if (this.campaignTerm.trim() !== '') {
-        this.params += this.has_params ? '&utm_term=' +
-          this.campaignTerm.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignTerm.trim())) : 'utm_term=' +
-          this.campaignTerm.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignTerm.trim()))
-        this.has_params = true
-      }
-
-      if (this.campaignContent.trim() !== '') {
-        this.params += this.has_params ? '&utm_content=' +
-          this.campaignContent.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignContent.trim())) : 'utm_content=' +
-          this.campaignContent.replace(this.allowPlusSign,
-            encodeURIComponent(this.campaignContent.trim()))
-        this.has_params = true
-      }
-
-      if (this.has_params) {
-        if (this.generatedURL.indexOf('?') > 0) {
-          this.generatedURL += '&' + this.params
-        } else {
-          this.generatedURL += '?' + this.params
-        }
-      }
-      this.generatedURL += this.hash
-    },
     getParameterByName (name, url) {
       if (process.browser) {
-        if (!url) {
-          url = window.location.href
-        }
-        name = name.replace(/[[\]]/g, '\\$&')
-        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
-        const results = regex.exec(url)
-        if (!results) {
-          return null
-        }
-        if (!results[2]) {
+        try {
+          if (!url) {
+            url = document.location.href
+          }
+          const urlObj = new URL(url)
+          return urlObj.searchParams.get(name) || ''
+        } catch (e) {
+          console.log(e)
           return ''
         }
-        return decodeURIComponent(results[2].replace(/\+/g, ' '))
       }
     },
     caseSensitiveSource (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return 'referrer: google, facebook, newsletter'
         } else {
@@ -278,7 +225,7 @@ export default {
       return 'referrer: google, facebook, newsletter'
     },
     caseSensitiveMedium (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return 'marketing medium: cpc, banner, email, social'
         } else {
@@ -288,7 +235,7 @@ export default {
       return 'marketing medium: cpc, banner, email, social'
     },
     caseSensitiveCampaign (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return 'e.g. product, promo code, slogan'
         } else {
@@ -298,7 +245,7 @@ export default {
       return 'e.g. product, promo code, slogan'
     },
     caseSensitiveTerm (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return '(optional) use to identify the paid keywords'
         } else {
@@ -308,7 +255,7 @@ export default {
       return '(optional) use to identify the paid keywords'
     },
     caseSensitiveContent (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return '(optional) use to differentiate ads'
         } else {
