@@ -110,8 +110,7 @@ export default {
       campaignMedium: '',
       campaignName: '',
       campaignTerm: '',
-      campaignContent: '',
-      allowPlusSign: '/%2B/i'
+      campaignContent: ''
     }
   },
   computed: {
@@ -178,32 +177,21 @@ export default {
       }
 
       accumulator += hash
-
+      accumulator = accumulator.replace(/%2B/gi, '+')
       return accumulator
     }
   },
   mounted () {
     if (process.browser) {
-      if (this.getParameterByName('utm_source')) {
-        this.campaignSource = this.getParameterByName('utm_source')
-      }
-      if (this.getParameterByName('utm_medium')) {
-        this.campaignMedium = this.getParameterByName('utm_medium')
-      }
-      if (this.getParameterByName('utm_campaign')) {
-        this.campaignName = this.getParameterByName('utm_campaign')
-      }
-      if (this.getParameterByName('utm_term')) {
-        this.campaignTerm = this.getParameterByName('utm_term')
-      }
-      if (this.getParameterByName('utm_content')) {
-        this.campaignContent = this.getParameterByName('utm_content')
-      }
+      this.campaignSource = this.getParameterByName('utm_source')
+      this.campaignMedium = this.getParameterByName('utm_medium')
+      this.campaignName = this.getParameterByName('utm_campaign')
+      this.campaignTerm = this.getParameterByName('utm_term')
+      this.campaignContent = this.getParameterByName('utm_content')
     }
   },
   methods: {
     reset () {
-      this.$refs.form.reset()
       this.website = ''
       this.campaignSource = ''
       this.campaignMedium = ''
@@ -218,7 +206,7 @@ export default {
             url = document.location.href
           }
           const urlObj = new URL(url)
-          return urlObj.searchParams.get(name)
+          return urlObj.searchParams.get(name) || ''
         } catch (e) {
           console.log(e)
           return ''
@@ -226,7 +214,7 @@ export default {
       }
     },
     caseSensitiveSource (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return 'referrer: google, facebook, newsletter'
         } else {
@@ -236,7 +224,7 @@ export default {
       return 'referrer: google, facebook, newsletter'
     },
     caseSensitiveMedium (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return 'marketing medium: cpc, banner, email, social'
         } else {
@@ -246,7 +234,7 @@ export default {
       return 'marketing medium: cpc, banner, email, social'
     },
     caseSensitiveCampaign (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return 'e.g. product, promo code, slogan'
         } else {
@@ -256,7 +244,7 @@ export default {
       return 'e.g. product, promo code, slogan'
     },
     caseSensitiveTerm (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return '(optional) use to identify the paid keywords'
         } else {
@@ -266,7 +254,7 @@ export default {
       return '(optional) use to identify the paid keywords'
     },
     caseSensitiveContent (value) {
-      if (value.length > 0) {
+      if (value && value.length > 0) {
         if (value === value.toLowerCase() || value === value.toUpperCase()) {
           return '(optional) use to differentiate ads'
         } else {
