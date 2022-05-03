@@ -1,6 +1,6 @@
 {
   "name": "utm-generator.morsecodemedia.com",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A simple UTM generator.",
   "author": "Brandon Morse (brandon@morsecodemedia.com)",
   "contributors": [
@@ -23,6 +23,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/redirect-module": "^0.3.1",
     "@nuxtjs/robots": "^2.4.2",
     "@nuxtjs/sitemap": "^2.3.2",

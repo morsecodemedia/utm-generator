@@ -51,8 +51,12 @@ export default {
   modules: [
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',
-    '@nuxtjs/redirect-module'
+    '@nuxtjs/redirect-module',
+    '@nuxtjs/gtm'
   ],
+  gtm: {
+    id: 'GTM-TCKJ6BS'
+  },
   sitemap: {
     hostname: 'https://utm-generator.morsecodemedia.com',
     gzip: true,
